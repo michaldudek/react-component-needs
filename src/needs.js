@@ -111,7 +111,7 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
         <NeedsWrapper
           {...allProps}
           component={WrappedComponent}
-          ref={(wrapper) => this.wrapper = wrapper)}
+          ref={(wrapper) => this.wrapper = wrapper}
         />
       )
     }
