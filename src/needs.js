@@ -12,6 +12,8 @@
  *    }))(MyComponent)
  */
 import React, { Component } from 'react'
+import hoistStatics from 'hoist-non-react-statics'
+
 import NeedyComponent from './NeedyComponent'
 
 /**
@@ -104,7 +106,7 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
     }
   }
 
-  return Wrapper
+  return hoistStatics(Wrapper, WrappedComponent)
 }
 
 /**
