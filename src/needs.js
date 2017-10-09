@@ -17,13 +17,14 @@ import NeedyComponent from './NeedyComponent'
 /**
  * Wraps a component in NeedyComponent and handles resolving of all props.
  *
- * @param  {Object|Function} mapProps Object of required props or a function that returns such object.
+ * @param  {Object|Function} mapProps   Object of required props or a function that returns such object.
+ * @param  {Object}          lifecycles Map of React component lifecycle methods to hook into.
  * @return {Function}
  */
-export default function needs (mapProps = {}) {
+export default function needs (mapProps = {}, lifecycles = {}) {
   const propsMapper = typeof mapProps === 'function' ? mapProps : () => mapProps
 
-  return (WrappedComponent) => provideComponent(WrappedComponent, propsMapper)
+  return (WrappedComponent) => provideComponent(WrappedComponent, propsMapper, lifecycles)
 }
 
 /**
@@ -31,10 +32,23 @@ export default function needs (mapProps = {}) {
  *
  * @param  {Component} WrappedComponent React Component to be wrapped.
  * @param  {Function}  propsMapper      Function that resolves props.
+ * @param  {Object}    lifecycles       Map of React component lifecycle methods to hook into.
  * @return {Class}
  */
-function provideComponent (WrappedComponent, propsMapper) {
+function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
   const componentName = getComponentName(WrappedComponent)
+
+  // populate lifecycle methods with defaults
+  lifecycles = {
+    componentWillMount: () => null,
+    componentDidMount: () => null,
+    componentWillReceiveProps: () => null,
+    shouldComponentUpdate: () => null,
+    componentWillUpdate: () => null,
+    componentDidUpdate: () => null,
+    componentWillUnmount: () => null,
+    ...lifecycles
+  }
 
   class NeedsWrapper extends NeedyComponent {
     static displayName = `NeedyComponent(${componentName})`
@@ -42,6 +56,34 @@ function provideComponent (WrappedComponent, propsMapper) {
 
   class Wrapper extends Component {
     static displayName = `Needs(${NeedsWrapper.displayName})`
+
+    componentWillMount () {
+      lifecycles.componentWillMount(this.props)
+    }
+
+    componentDidMount () {
+      lifecycles.componentDidMount(this.props)
+    }
+
+    componentWillReceiveProps (nextProps) {
+      lifecycles.componentWillReceiveProps(nextProps, this.props)
+    }
+
+    shouldComponentUpdate (nextProps) {
+      return lifecycles.shouldComponentUpdate(nextProps, this.props)
+    }
+
+    componentWillUpdate (nextProps) {
+      lifecycles.componentWillUpdate(nextProps, this.props)
+    }
+
+    componentDidUpdate (prevProps) {
+      lifecycles.componentDidUpdate(prevProps, this.props)
+    }
+
+    componentWillUnmount() {
+      lifecycles.componentWillUnmount(this.props)
+    }
 
     render () {
       const allProps = {
