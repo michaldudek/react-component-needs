@@ -59,6 +59,16 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
   class Wrapper extends Component {
     static displayName = `Needs(${NeedsWrapper.displayName})`
 
+    wrapper = null
+
+    getWrappedComponent () {
+      if (!wrapper) {
+        return null
+      }
+
+      return this.wrapper.getWrappedComponent()
+    }
+
     componentWillMount () {
       lifecycles.componentWillMount(this.props)
     }
@@ -101,6 +111,7 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
         <NeedsWrapper
           {...allProps}
           component={WrappedComponent}
+          ref={(wrapper) => this.wrapper = wrapper)}
         />
       )
     }

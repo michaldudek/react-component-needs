@@ -25,6 +25,8 @@ export default class NeedyComponent extends Component {
     blockedComponent: () => false
   }
 
+  wrappedComponent = null
+
   constructor (props) {
     super(props)
     this.needsCalled = false
@@ -36,6 +38,10 @@ export default class NeedyComponent extends Component {
 
   componentWillUpdate (nextProps) {
     this.checkNeeds(nextProps)
+  }
+
+  getWrappedComponent () {
+    return this.wrappedComponent
   }
 
   /**
@@ -86,6 +92,11 @@ export default class NeedyComponent extends Component {
     }
 
     const WrappedComponent = component
-    return <WrappedComponent {...props} />
+    return (
+      <WrappedComponent
+        {...props}
+        ref={(component) => this.wrappedComponent = component}
+      />
+    )
   }
 }
