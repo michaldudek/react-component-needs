@@ -70,7 +70,11 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
     }
 
     shouldComponentUpdate (nextProps) {
-      return lifecycles.shouldComponentUpdate(nextProps, this.props)
+      const should = lifecycles.shouldComponentUpdate(nextProps, this.props)
+      if (should === false) {
+        return false
+      }
+      return true
     }
 
     componentWillUpdate (nextProps) {
