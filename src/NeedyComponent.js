@@ -42,6 +42,8 @@ export default class NeedyComponent extends Component {
     this.checkNeeds(nextProps)
   }
 
+  setRef = (component) => this.wrappedComponent = component
+
   getWrappedComponent () {
     return this.wrappedComponent
   }
@@ -98,7 +100,7 @@ export default class NeedyComponent extends Component {
     return (
       <WrappedComponent
         {...props}
-        ref={(component) => this.wrappedComponent = component}
+        ref={this.setRef}
       />
     )
   }

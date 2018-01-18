@@ -62,6 +62,8 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
 
     wrapper = null
 
+    setRef = (wrapper) => this.wrapper = wrapper
+
     getWrappedComponent () {
       if (!wrapper) {
         return null
@@ -112,7 +114,7 @@ function provideComponent (WrappedComponent, propsMapper, lifecycles = {}) {
         <NeedsWrapper
           {...allProps}
           component={WrappedComponent}
-          ref={(wrapper) => this.wrapper = wrapper}
+          ref={this.setRef}
         />
       )
     }
