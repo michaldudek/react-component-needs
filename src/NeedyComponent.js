@@ -15,14 +15,16 @@ export default class NeedyComponent extends Component {
     component: PropTypes.func.isRequired,
     needsInProgress: PropTypes.bool,
     progressComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    blockedComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.node])
+    blockedComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+    forceNeeds: PropTypes.bool
   }
 
   static defaultProps = {
     needs: () => null,
     needsInProgress: false,
     progressComponent: () => false,
-    blockedComponent: () => false
+    blockedComponent: () => false,
+    forceNeeds: false
   }
 
   wrappedComponent = null
@@ -53,10 +55,11 @@ export default class NeedyComponent extends Component {
   checkNeeds (props) {
     const {
       condition,
-      needs
+      needs,
+      forceNeeds
     } = props
 
-    if (condition) {
+    if (condition && !forceNeeds) {
       this.needsCalled = false
       return true
     }

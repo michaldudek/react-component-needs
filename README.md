@@ -53,7 +53,10 @@ export default connect(
     progressComponent: InProgress,
     // (node) component to display when `condition === false && needsInProgress === false`,
     // i.e. needs have been fired and resolved but the condition still fails
-    blockedComponent: Error404
+    blockedComponent: Error404,
+    // (bool) set to true if you want to call needs() when the component is mounting regardless of condition being fulfilled
+    // useful when you want to refresh the data on every component mount
+    forceNeeds: true
   })
 )(MyComponent))
 ```

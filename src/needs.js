@@ -8,7 +8,8 @@
  *      needs: [function to call in order the fulfill condition if necessary],
  *      needsInProgress: [bool indicating if needs are being fetched currently or not],
  *      progressComponent: [component to render during progress],
- *      blockedComponent: [component to render after condition hasn't been met]
+ *      blockedComponent: [component to render after condition hasn't been met],
+ *      forceNeeds: [bool to force call to needs() even if condition is met (e.g. use to refresh content)]
  *    }))(MyComponent)
  */
 import React, { Component } from 'react'
