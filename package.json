@@ -1,6 +1,6 @@
 {
   "name": "react-component-needs",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "Block rendering of a component until its needs are met (or render alternative component).",
   "author": "Michal Palys-Dudek <michal@palys-dudek.pl>",
   "license": "MIT",
